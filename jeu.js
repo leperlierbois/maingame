@@ -461,12 +461,12 @@ async function choisirGobelet(id) {
 
   await attendre(900);
 
-  // Puis on montre les autres :
-  //  - si gagné : les gobelets vides se lèvent (on voit qu'il n'y avait rien)
-  //  - si perdu : les gobelets qui avaient une bille se lèvent
-  const autres = etat.gobelets.filter((g) => g !== choisi && g.aBoule !== gagne);
+  // Puis on lève les DEUX autres gobelets en même temps, gagné ou perdu,
+  // pour montrer où étaient la ou les billes.
+  const autres = etat.gobelets.filter((g) => g !== choisi);
+  son('lever');
   await leverPlusieurs(autres);
-  await attendre(1200);
+  await attendre(1500);
   await baisserPlusieurs([choisi, ...autres]);
 
   etat.mise = 0;
