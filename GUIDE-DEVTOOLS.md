@@ -55,6 +55,8 @@ Tu peux aussi tricher dans l'autre sens, en modifiant l'état :
 
 ```js
 etat.score.gagnees = 999; afficherScore();
+etat.solde = 1000000; afficherScore();        // solde fictif gonflé
+etat.mise                                      // la mise de la partie en cours
 etat.gobelets.forEach(g => g.aBoule = true);   // tout gobelet devient gagnant
 ```
 

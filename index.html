@@ -2,33 +2,140 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0820">
   <title>Trois gobelets</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <h1>Les 3 gobelets</h1>
+  <!-- Décor : ciel de nuit, faisceaux lumineux et silhouette de ville (CSS + SVG) -->
+  <div class="decor" aria-hidden="true">
+    <div class="faisceau f1"></div>
+    <div class="faisceau f2"></div>
+    <div class="faisceau f3"></div>
+    <div class="faisceau f4"></div>
+    <svg class="ville" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <pattern id="fenetres" width="14" height="18" patternUnits="userSpaceOnUse">
+          <rect x="3" y="4" width="5" height="7" fill="#ffd36b" opacity=".55"/>
+        </pattern>
+        <pattern id="fenetres2" width="22" height="20" patternUnits="userSpaceOnUse">
+          <rect x="4" y="5" width="7" height="6" fill="#6be7ff" opacity=".45"/>
+          <rect x="13" y="5" width="7" height="6" fill="#ff7be5" opacity=".25"/>
+        </pattern>
+      </defs>
+      <!-- arrière-plan -->
+      <g fill="#2a1b5e" opacity=".85">
+        <rect x="20" y="170" width="70" height="230"/>
+        <rect x="140" y="120" width="55" height="280"/>
+        <rect x="260" y="200" width="90" height="200"/>
+        <rect x="420" y="150" width="60" height="250"/>
+        <rect x="560" y="90" width="70" height="310"/>
+        <rect x="700" y="180" width="80" height="220"/>
+        <rect x="850" y="130" width="60" height="270"/>
+        <rect x="980" y="190" width="90" height="210"/>
+        <rect x="1110" y="140" width="70" height="260"/>
+      </g>
+      <!-- premier plan -->
+      <g fill="#120c33">
+        <rect x="0" y="230" width="110" height="170"/>
+        <rect x="95" y="60" width="60" height="340"/>
+        <polygon points="95,60 125,20 155,60"/>
+        <rect x="190" y="250" width="120" height="150"/>
+        <rect x="330" y="190" width="75" height="210"/>
+        <rect x="470" y="260" width="140" height="140"/>
+        <rect x="640" y="210" width="70" height="190"/>
+        <rect x="760" y="270" width="130" height="130"/>
+        <rect x="920" y="80" width="75" height="320"/>
+        <polygon points="920,80 957,40 995,80"/>
+        <rect x="1030" y="240" width="170" height="160"/>
+      </g>
+      <g>
+        <rect x="100" y="80" width="50" height="320" fill="url(#fenetres)"/>
+        <rect x="335" y="200" width="66" height="200" fill="url(#fenetres2)"/>
+        <rect x="645" y="225" width="62" height="175" fill="url(#fenetres)"/>
+        <rect x="925" y="100" width="66" height="300" fill="url(#fenetres2)"/>
+        <rect x="1040" y="255" width="150" height="145" fill="url(#fenetres)"/>
+      </g>
+      <!-- liserés néon -->
+      <rect x="95" y="58" width="60" height="3" fill="#ff4fd8"/>
+      <rect x="920" y="78" width="75" height="3" fill="#36e2ff"/>
+      <rect x="470" y="258" width="140" height="3" fill="#ffb347"/>
+    </svg>
+  </div>
 
-    <!-- Choix du nombre de boules -->
-    <fieldset id="choix-boules">
-      <legend>Nombre de boules</legend>
-      <label><input type="radio" name="nb-boules" value="1" checked> 1 boule</label>
-      <label><input type="radio" name="nb-boules" value="2"> 2 boules</label>
-    </fieldset>
-
-    <!-- La "table" : jeu.js y crée les 3 gobelets -->
-    <div id="table" aria-live="polite"></div>
-
-    <p id="message">Choisis le nombre de boules, puis clique sur « Lancer ».</p>
-
-    <div class="boutons">
-      <button id="btn-lancer">Lancer</button>
-      <button id="btn-melanger" disabled>Mélanger</button>
+  <!-- Solde fictif -->
+  <header class="haut">
+    <div class="solde">
+      <span class="solde-titre">Solde fictif</span>
+      <strong id="solde">100 000 XOF</strong>
     </div>
+    <button id="btn-reset" class="petit-btn" type="button" title="Remettre le solde à 100 000 XOF">↺ Réinitialiser</button>
+  </header>
 
-    <p id="score">Gagnées : 0 · Perdues : 0</p>
+  <!-- Bandeau de messages -->
+  <div class="bandeau">
+    <p id="message" aria-live="polite">Placez un pari</p>
+  </div>
+
+  <main class="scene">
+    <div class="estrade">
+      <!-- La "table" : jeu.js y crée les 3 gobelets -->
+      <div id="table"></div>
+
+      <!-- Choix du nombre de billes -->
+      <div class="modes" id="choix-boules" role="radiogroup" aria-label="Nombre de billes">
+        <button type="button" class="mode mode-1 actif" data-boules="1" role="radio" aria-checked="true">
+          <span class="pastilles"><i></i></span> 1 bille <b>×2,91</b>
+        </button>
+        <button type="button" class="mode mode-2" data-boules="2" role="radio" aria-checked="false">
+          <span class="pastilles"><i></i><i></i></span> 2 billes <b>×1,45</b>
+        </button>
+      </div>
+    </div>
   </main>
+
+  <!-- Barre de mise -->
+  <footer class="barre">
+    <div class="barre-gauche">
+      <button id="btn-aide" class="icone aide" type="button" aria-label="Aide">?</button>
+      <button id="btn-son" class="icone son" type="button" aria-label="Couper le son" aria-pressed="true">🔊</button>
+      <label class="champ-mise">
+        <span class="visuellement-cache">Mise en XOF</span>
+        <input id="mise" type="text" inputmode="decimal" autocomplete="off" value="200">
+        <span class="devise">XOF</span>
+        <button id="btn-effacer" class="effacer" type="button" aria-label="Effacer la mise">✕</button>
+      </label>
+    </div>
+    <div class="jetons" id="jetons">
+      <button type="button" data-valeur="200">200</button>
+      <button type="button" data-valeur="400">400</button>
+      <button type="button" data-valeur="1000">1000</button>
+      <button type="button" data-valeur="2000">2000</button>
+      <button type="button" data-valeur="5000">5000</button>
+      <button type="button" data-valeur="10000">10000</button>
+    </div>
+    <button id="btn-jouer" class="jouer" type="button" aria-label="Jouer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>
+    </button>
+  </footer>
+
+  <p id="score">Gagnées : 0 · Perdues : 0</p>
+
+  <!-- Fenêtre d'aide -->
+  <div id="aide" class="aide-fond" hidden>
+    <div class="aide-boite" role="dialog" aria-modal="true" aria-labelledby="aide-titre">
+      <h2 id="aide-titre">Comment jouer</h2>
+      <ol>
+        <li>Choisis <b>1 bille</b> (gain ×2,91) ou <b>2 billes</b> (gain ×1,45).</li>
+        <li>Saisis ta mise ou touche un jeton. Mise de <b>200</b> à <b>73 411,6 XOF</b>.</li>
+        <li>Appuie sur ▶ : les billes se montrent, puis les gobelets se mélangent.</li>
+        <li>Touche le gobelet qui cache une bille. Gagné : tu reçois mise × multiplicateur.</li>
+      </ol>
+      <p class="note">Argent fictif, juste pour s’amuser. Rien n’est réel, rien ne se paie.</p>
+      <button id="btn-fermer-aide" class="petit-btn" type="button">Compris</button>
+    </div>
+  </div>
 
   <!-- Script "classique" (pas un module) : ses variables et fonctions
        sont accessibles depuis la console de Chrome. C'est voulu pour l'exercice. -->
