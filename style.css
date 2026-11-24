@@ -1,0 +1,132 @@
+:root {
+  --fond: #f4efe6;
+  --texte: #2b2520;
+  --tapis: #1f6b45;
+  --tapis-bord: #154d31;
+  --gobelet: #c0392b;
+  --gobelet-sombre: #8e2a1f;
+  --boule: #f5c542;
+  --accent: #2b2520;
+  --accent-texte: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #1a1714;
+    --texte: #efe8dd;
+    --accent: #efe8dd;
+    --accent-texte: #1a1714;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #1a1714;
+  --texte: #efe8dd;
+  --accent: #efe8dd;
+  --accent-texte: #1a1714;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  text-align: center;
+}
+
+h1 { margin: 0 0 16px; font-size: 1.8rem; }
+
+fieldset {
+  border: none;
+  margin: 0 0 16px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+legend { width: 100%; margin-bottom: 6px; font-weight: 600; }
+fieldset:disabled { opacity: 0.5; }
+
+/* ---------- La table ---------- */
+#table {
+  position: relative;
+  height: 300px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at center, #26845a 0%, var(--tapis) 70%);
+  border: 6px solid var(--tapis-bord);
+  overflow: hidden;
+}
+
+/* Un "emplacement" = un gobelet + sa boule. Il occupe un tiers de la table.
+   jeu.js change sa propriété "left" pour le déplacer (0 %, 33.33 %, 66.66 %). */
+.emplacement {
+  position: absolute;
+  top: 0;
+  width: 33.333%;
+  height: 100%;
+  transition-property: left;
+  transition-timing-function: ease-in-out;
+}
+/* Pendant un échange, un gobelet passe "devant" l'autre */
+.emplacement.devant { z-index: 2; }
+.emplacement.devant .gobelet { filter: brightness(1.1); }
+
+.boule {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff6cf, var(--boule) 45%, #b8860b);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.35);
+}
+/* Pas de boule sous ce gobelet */
+.boule[hidden] { display: none; }
+
+/* Le gobelet est un <button> : on peut cliquer dessus */
+.gobelet {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  width: min(80%, 120px);
+  height: 150px;
+  transform: translateX(-50%);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--gobelet-sombre), var(--gobelet) 40%, var(--gobelet-sombre));
+  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
+  transition: transform 450ms ease;
+}
+.gobelet:disabled { cursor: default; }
+.gobelet:focus-visible { outline: 4px solid var(--boule); }
+
+/* Gobelet levé */
+.gobelet.leve { transform: translateX(-50%) translateY(-115px); }
+
+#message { min-height: 3em; margin: 16px 0 8px; font-size: 1.1rem; }
+#message.gagne { color: #2e9e5b; font-weight: 700; }
+#message.perdu { color: #d0453a; font-weight: 700; }
+
+.boutons { display: flex; justify-content: center; gap: 12px; }
+
+.boutons button {
+  font: inherit;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-texte);
+  cursor: pointer;
+}
+.boutons button:disabled { opacity: 0.35; cursor: default; }
+
+#score { margin-top: 18px; opacity: 0.8; }

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trois gobelets</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Les 3 gobelets</h1>
+
+    <!-- Choix du nombre de boules -->
+    <fieldset id="choix-boules">
+      <legend>Nombre de boules</legend>
+      <label><input type="radio" name="nb-boules" value="1" checked> 1 boule</label>
+      <label><input type="radio" name="nb-boules" value="2"> 2 boules</label>
+    </fieldset>
+
+    <!-- La "table" : jeu.js y crée les 3 gobelets -->
+    <div id="table" aria-live="polite"></div>
+
+    <p id="message">Choisis le nombre de boules, puis clique sur « Lancer ».</p>
+
+    <div class="boutons">
+      <button id="btn-lancer">Lancer</button>
+      <button id="btn-melanger" disabled>Mélanger</button>
+    </div>
+
+    <p id="score">Gagnées : 0 · Perdues : 0</p>
+  </main>
+
+  <!-- Script "classique" (pas un module) : ses variables et fonctions
+       sont accessibles depuis la console de Chrome. C'est voulu pour l'exercice. -->
+  <script src="jeu.js"></script>
+</body>
+</html>
